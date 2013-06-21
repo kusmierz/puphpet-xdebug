@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "puphpet/puphpet-module-installer": "*",
+        "puphpet/puphpet-module-installer": "*"
     },
     "target-dir": "xdebug"
 }
