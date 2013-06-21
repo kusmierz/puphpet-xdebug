@@ -1,0 +1,21 @@
+{
+    "name": "puphpet/puppet-xdebug",
+    "type": "puphpet-module",
+    "description": "Non-PHP! Composer-friendly version of ridonkulous Xdebug module",
+    "keywords": ["puppet", "vm", "virtual machine"],
+    "homepage": "https://github.com/puphpet/puppet-xdebug",
+    "authors": [
+        {
+            "name": "ridonkulous",
+            "homepage": "https://github.com/ridonkulous/puppet-xdebug"
+        },
+        {
+            "name": "PuPHPet",
+            "homepage": "https://github.com/puphpet/puppet-xdebug"
+        }
+    ],
+    "require": {
+        "puphpet/puphpet-module-installer": "*",
+    },
+    "target-dir": "xdebug"
+}
