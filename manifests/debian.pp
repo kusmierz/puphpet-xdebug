@@ -1,11 +1,11 @@
 class xdebug::debian {
 
-    include xdebug::params
+  include xdebug::params
     
-    package { "xdebug":
-        name   => $xdebug::params::pkg,
-        ensure => installed,
-        require => Class['php'],
-    }
+  package { 'xdebug':
+    name   => $xdebug::params::pkg,
+    ensure => installed,
+    require => Class['php'],
+  }
 
 }

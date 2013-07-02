@@ -83,4 +83,5 @@ define xdebug::config (
       source => 'puppet:///modules/xdebug/cli_alias.erb'
     }
   }
+
 }
