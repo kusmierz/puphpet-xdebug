@@ -1,31 +1,25 @@
-puppet-xdebug
+puphpet-xdebug
 =============
 
 Puppet module for installing XDEBUG PHP Extension
 
 Installs XDEBUG Support.
 Depends on (tested with)
- - https://github.com/camptocamp/puppet-php.git
+ - https://github.com/puphpet/puppet-php.git
 
 Example usage:
 
-    include xdebug
+    class { 'xdebug': }
 
-Advanced configuration:
+To set up CGI/CLI specific INI files:
 
-    xdebug::config { 'default':
-        remote_host => '169.254.0.1', # Vagrant users can specify their address
-        remote_port => '9000', # Change default settings 
-    }
+    xdebug::config { 'cgi': }
+    xdebug::config { 'cli': }
 
-Author: Stefan Kögel
+Maintained by: PuPHPet
+
+GitHub: git@github.com:puphpet/puphpet-xdebug.git
+
+Original Author: Stefan Kögel
 
 GitHub: git@github.com:stkoegel/puppet-xdebug.git
-
-Changelog:
-
-* Version 0.1 - Initial Commit for Debian/Ubuntu and three config values
-* Version 0.2 - Add xdebug configuration options
-
-ToDo:
-- add support for RedHat and other os
