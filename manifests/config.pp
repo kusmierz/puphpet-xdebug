@@ -10,10 +10,24 @@ define xdebug::config (
   $show_exception_trace  = 0,
   $show_local_vars       = 0,
   $var_display_max_data  = 10000,
-  $var_display_max_depth = 20
+  $var_display_max_depth = 20,
+  $ini_file              = undef,
 ) {
 
-  $default = {
+  if (!$ini_file) {
+    # guess the ini file as fallback
+    if $name == 'cgi' {
+      $ini_file_real = "${php::config_dir}/${php::service}/php.ini"
+    } elsif $name == 'cli' {
+      $ini_file_real = "${php::config_dir}/cli/php.ini"
+    } else {
+      $ini_file_real = "${php::config_file}"
+    }
+  } else {
+    $ini_file_real = $ini_file
+  }
+
+  $vars = {
     default_enable        => $default_enable,
     remote_autostart      => $remote_autostart,
     remote_connect_back   => $remote_connect_back,
@@ -25,54 +39,20 @@ define xdebug::config (
     show_exception_trace  => $show_exception_trace,
     show_local_vars       => $show_local_vars,
     var_display_max_data  => $var_display_max_data,
-    var_display_max_depth => $var_display_max_depth
+    var_display_max_depth => $var_display_max_depth,
+    ini                   => $ini_file_real
   }
 
-  $cgi = {
-    default_enable        => 1,
-    remote_autostart      => 1,
-    remote_connect_back   => 1,
-    remote_enable         => 1,
-    remote_handler        => 'dbgp',
-    remote_host           => $ipaddress_eth1,
-    remote_mode           => 'req',
-    remote_port           => 9000,
-    show_exception_trace  => 0,
-    show_local_vars       => 0,
-    var_display_max_data  => 10000,
-    var_display_max_depth => 20
-  }
-
-  $cli_temp = {
-    ini                 => "${php::config_dir}/cli/php.ini",
-    remote_connect_back => 0
-  }
-  $cli = merge($cgi, $cli_temp)
-
-  if $name == 'cgi' {
-    $ini_file = "${php::config_dir}/${php::service}/php.ini"
-    $vars     = $cgi
-  } elsif $name == 'cli' {
-    $ini_file = "${php::config_dir}/cli/php.ini"
-    $vars     = $cli
-  } else {
-    $ini_file = "${php::config_file}"
-    $vars     = $default
-  }
-
-  php::ini::removeblock { "xdebug-${name}":
+  puphpet::ini::removeblock { "xdebug-${name}":
     block_name => 'xdebug',
-    ini_file   => $ini_file
+    ini_file   => $ini_file_real
   }
 
-  file_line { $ini_file:
+  file_line { $ini_file_real:
     ensure  => present,
     line    => template('xdebug/ini_file.erb'),
-    path    => $ini_file,
-    require => [
-      Package['xdebug'],
-      Php::Ini::Removeblock["xdebug-${name}"]
-    ]
+    path    => $ini_file_real,
+    require => Puphpet::Ini::Removeblock["xdebug-${name}"],
   }
 
   # shortcut for xdebug CLI debugging
