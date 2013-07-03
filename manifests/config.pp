@@ -44,19 +44,19 @@ define xdebug::config (
   }
 
   $cli_temp = {
-    ini                 => "${php::params::config_dir}/cli/php.ini",
+    ini                 => "${php::config_dir}/cli/php.ini",
     remote_connect_back => 0
   }
   $cli = merge($cgi, $cli_temp)
 
   if $name == 'cgi' {
-    $ini_file = "${php::params::config_dir}/${php::params::service}/php.ini"
+    $ini_file = "${php::config_dir}/${php::service}/php.ini"
     $vars     = $cgi
   } elsif $name == 'cli' {
-    $ini_file = "${php::params::config_dir}/cli/php.ini"
+    $ini_file = "${php::config_dir}/cli/php.ini"
     $vars     = $cli
   } else {
-    $ini_file = "${php::params::config_dir}/${php::params::service}/php.ini"
+    $ini_file = "${php::config_file}"
     $vars     = $default
   }
 
