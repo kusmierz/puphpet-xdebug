@@ -12,6 +12,8 @@ define xdebug::config (
   $var_display_max_data  = 10000,
   $var_display_max_depth = 20,
   $ini_file              = undef,
+  $template              = 'xdebug/ini.erb',
+  $service               = $php::service
 ) {
 
   if (!$ini_file) {
@@ -27,41 +29,14 @@ define xdebug::config (
     $ini_file_real = $ini_file
   }
 
-  $vars = {
-    default_enable        => $default_enable,
-    remote_autostart      => $remote_autostart,
-    remote_connect_back   => $remote_connect_back,
-    remote_enable         => $remote_enable,
-    remote_handler        => $remote_handler,
-    remote_host           => $remote_host,
-    remote_mode           => $remote_mode,
-    remote_port           => $remote_port,
-    show_exception_trace  => $show_exception_trace,
-    show_local_vars       => $show_local_vars,
-    var_display_max_data  => $var_display_max_data,
-    var_display_max_depth => $var_display_max_depth,
-    ini                   => $ini_file_real
-  }
-
-  puphpet::ini::removeblock { "xdebug-${name}":
-    block_name => 'xdebug',
-    ini_file   => $ini_file_real
-  }
-
-  file_line { $ini_file_real:
-    ensure  => present,
-    line    => template('xdebug/ini_file.erb'),
-    path    => $ini_file_real,
-    require => Puphpet::Ini::Removeblock["xdebug-${name}"],
-  }
-
-  # shortcut for xdebug CLI debugging
-  if ! defined(File['/usr/bin/xdebug']) {
-    file { '/usr/bin/xdebug':
-      ensure => 'present',
-      mode   => '+X',
-      source => 'puppet:///modules/xdebug/cli_alias.erb'
-    }
+  file { $ini_file_real:
+    ensure   => file,
+    replace  => true,
+    owner    => root,
+    group    => root,
+    mode     => '0644',
+    content  => template($template),
+    notify   => Service[$service],
   }
 
 }
