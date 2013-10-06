@@ -3,23 +3,25 @@ puphpet-xdebug
 
 Puppet module for installing XDEBUG PHP Extension
 
-Installs XDEBUG Support.
-Depends on (tested with)
- - https://github.com/puphpet/puppet-php.git
+Installs Xdebug Support.
 
 Example usage:
 
-    class { 'xdebug': }
+    class { 'xdebug':
+      service => 'httpd'
+    }
 
-To set up CGI/CLI specific INI files:
+It automatically installs a handy shortcut for CLI debugging:
 
-    xdebug::config { 'cgi': }
-    xdebug::config { 'cli': }
+    $ xdebug foo.php
 
-Maintained by: PuPHPet
+To disable it, install xdebug as:
 
-GitHub: git@github.com:puphpet/puphpet-xdebug.git
+    class { 'xdebug':
+      service     => 'httpd',
+      install_cli => false
+    }
 
-Original Author: Stefan Kögel
+Created by: PuPHPet
 
-GitHub: git@github.com:stkoegel/puppet-xdebug.git
+GitHub: https://github.com/puphpet/puphpet-xdebug
