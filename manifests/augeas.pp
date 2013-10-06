@@ -17,6 +17,9 @@ define xdebug::augeas (
     lens    => 'Php.lns',
     changes => $changes,
     notify  => Service[$service],
-    require => Package[$xdebug::params::php],
+    require => [
+      Package[$xdebug::params::php],
+      Package[$xdebug::params::pkg]
+    ]
   }
 }
