@@ -39,13 +39,4 @@ define xdebug::config (
     notify   => Service[$service],
   }
 
-  # shortcut for xdebug CLI debugging
-  if ! defined(File['/usr/bin/xdebug']) {
-    file { '/usr/bin/xdebug':
-      ensure => 'present',
-      mode   => '+X',
-      source => 'puppet:///modules/xdebug/cli_alias.erb'
-    }
-  }
-
 }

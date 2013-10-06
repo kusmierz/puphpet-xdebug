@@ -1,12 +1,24 @@
 class xdebug (
-  $service = 'apache'
-){
+  $service = 'httpd',
+  $install_cli = $xdebug::params::install_cli
+) inherits xdebug::params {
 
-  package { 'xdebug':
-    name    => 'php5-xdebug',
-    ensure  => installed,
-    require => Package['php'],
-    notify  => Service[$service],
+  if defined(Package[$method_package]) == false {
+    package { 'xdebug':
+      name    => $xdebug::params::pkg,
+      ensure  => installed,
+      require => Package[$xdebug::params::php],
+      notify  => Service[$service],
+    }
+  }
+
+  # shortcut for xdebug CLI debugging
+  if $xdebug::params::install_cli and defined(File['/usr/bin/xdebug']) == false {
+    file { '/usr/bin/xdebug':
+      ensure => 'present',
+      mode   => '+X',
+      source => 'puppet:///modules/xdebug/cli_alias.erb'
+    }
   }
 
 }

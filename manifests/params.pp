@@ -1,10 +1,14 @@
 class xdebug::params {
 
-  $pkg = $operatingsystem ? {
-    /Debian|Ubuntu/ => 'php5-xdebug',
-  }
+  $install_cli = true
 
-  $php = $operatingsystem ? {
-    /Debian|Ubuntu/ => 'php5-cli',
+  case $::osfamily {
+    'Debian': {
+      $pkg = 'php5-xdebug'
+      $php = 'php5-cli'
+    }
+    default: {
+      fail("Unsupported platform: ${::osfamily}")
+    }
   }
 }
