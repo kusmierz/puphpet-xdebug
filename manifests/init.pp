@@ -23,7 +23,7 @@ class xdebug (
       source  => 'puppet:///modules/xdebug/cli_alias.erb',
       require => [
         Package[$xdebug::params::php],
-        Paclage[$xdebug::params::pkg]
+        Package[$xdebug::params::pkg]
       ]
     }
   }
