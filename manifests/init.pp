@@ -7,7 +7,10 @@ class xdebug (
     package { 'xdebug':
       name    => $xdebug::params::pkg,
       ensure  => installed,
-      require => Package[$xdebug::params::php],
+      require => [
+        Package[$xdebug::params::php],
+        Paclage[$xdebug::params::pkg]
+      ],
       notify  => Service[$service],
     }
   }
@@ -15,9 +18,13 @@ class xdebug (
   # shortcut for xdebug CLI debugging
   if $xdebug::params::install_cli and defined(File['/usr/bin/xdebug']) == false {
     file { '/usr/bin/xdebug':
-      ensure => present,
-      mode   => '+X',
-      source => 'puppet:///modules/xdebug/cli_alias.erb'
+      ensure  => present,
+      mode    => '+X',
+      source  => 'puppet:///modules/xdebug/cli_alias.erb',
+      require => [
+        Package[$xdebug::params::php],
+        Paclage[$xdebug::params::pkg]
+      ]
     }
   }
 
