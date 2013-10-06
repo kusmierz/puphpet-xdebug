@@ -7,10 +7,7 @@ class xdebug (
     package { 'xdebug':
       name    => $xdebug::params::pkg,
       ensure  => installed,
-      require => [
-        Package[$xdebug::params::php],
-        Package[$xdebug::params::pkg]
-      ],
+      require => Package[$xdebug::params::php],
       notify  => Service[$service],
     }
   }
