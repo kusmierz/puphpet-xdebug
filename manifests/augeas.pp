@@ -2,22 +2,20 @@ define xdebug::augeas (
   $value    = '',
   $ini_file = $xdebug::params::ini_file,
   $ensure   = present,
-  $service = 'httpd',
+  $service = 'httpd'
   ) {
 
   include xdebug
 
   $changes = $ensure ? {
-    present => [ "set '${name}' '${value}'" ],
-    absent  => [ "rm '${name}'" ],
+    present => [ "set 'Xdebug/${name}' '${value}'" ],
+    absent  => [ "rm 'Xdebug/${name}'" ],
   }
 
   augeas { "xdebug_ini-${name}":
-    incl    => "${ini_file}/Xdebug",
+    incl    => "${ini_file}",
     lens    => 'Php.lns',
-    changes => [
-      "set PermitRootLogin no",
-    ],
+    changes => $changes,
     notify  => Service[$service],
   }
 }
