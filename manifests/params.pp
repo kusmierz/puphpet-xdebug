@@ -5,7 +5,7 @@ class xdebug::params {
   case $::osfamily {
     'Debian': {
       $pkg      = 'php5-xdebug'
-      $php      = 'php5-cli'
+      $php      = 'php'
       $ini_file = '/etc/php5/mods-available/xdebug.ini'
     }
     default: {

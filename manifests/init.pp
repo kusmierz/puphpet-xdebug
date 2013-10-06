@@ -15,7 +15,7 @@ class xdebug (
   # shortcut for xdebug CLI debugging
   if $xdebug::params::install_cli and defined(File['/usr/bin/xdebug']) == false {
     file { '/usr/bin/xdebug':
-      ensure => 'present',
+      ensure => present,
       mode   => '+X',
       source => 'puppet:///modules/xdebug/cli_alias.erb'
     }
