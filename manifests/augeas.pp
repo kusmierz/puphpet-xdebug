@@ -13,7 +13,7 @@ define xdebug::augeas (
   }
 
   augeas { "xdebug_ini-${name}":
-    context => "${ini_file}/Xdebug",
+    incl    => "${ini_file}/Xdebug",
     lens    => 'Php.lns',
     changes => [
       "set PermitRootLogin no",
